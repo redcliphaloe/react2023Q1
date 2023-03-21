@@ -1,5 +1,12 @@
+import PagesLinks from '../components/PagesLinks';
+
 function AboutUs() {
-  return <h1>About us</h1>;
+  return (
+    <>
+      <PagesLinks />
+      <h1>About us</h1>
+    </>
+  );
 }
 
 export default AboutUs;

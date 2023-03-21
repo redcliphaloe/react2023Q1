@@ -1,5 +1,12 @@
+import PagesLinks from '../components/PagesLinks';
+
 function NotFound() {
-  return <h1>404</h1>;
+  return (
+    <>
+      <PagesLinks />
+      <h1>404</h1>
+    </>
+  );
 }
 
 export default NotFound;

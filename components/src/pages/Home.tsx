@@ -1,5 +1,12 @@
+import PagesLinks from '../components/PagesLinks';
+
 function Home() {
-  return <h1>Home</h1>;
+  return (
+    <>
+      <PagesLinks />
+      <h1>Home</h1>
+    </>
+  );
 }
 
 export default Home;
