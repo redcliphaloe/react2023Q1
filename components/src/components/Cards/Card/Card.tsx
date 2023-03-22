@@ -19,7 +19,6 @@ class Card extends React.Component {
 
   render() {
     const cardData = this.props as CardData;
-    // return <div className="card">{(this.props as CardData).name}</div>;
     return (
       <div className="card">
         <h3 className="card__name">{cardData.name}</h3>
@@ -34,13 +33,5 @@ class Card extends React.Component {
     );
   }
 }
-
-// function Card() {
-//   return (
-//     <div className="card">
-//       <h3>карточка</h3>
-//     </div>
-//   );
-// }
 
 export default Card;
