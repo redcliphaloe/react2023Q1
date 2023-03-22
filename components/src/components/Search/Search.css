@@ -1,5 +1,7 @@
 .search {
   position: relative;
+  width: 200px;
+  margin: 0 auto;
 }
 
 .search__img {
@@ -17,7 +19,7 @@
 }
 
 .search__text {
-  min-width: 200px;
+  width: 100%;
 }
 
 .search__clear {
