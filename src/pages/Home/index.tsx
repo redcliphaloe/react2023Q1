@@ -1,5 +1,5 @@
 import PagesLinks from '../../components/PagesLinks';
-import Search from '../../components/Search';
+import HomeSearch from '../../components/HomeSearch';
 import HomeCards from '../../components/HomeCards';
 
 function Home() {
@@ -7,7 +7,7 @@ function Home() {
     <>
       <PagesLinks />
       <h1>Home</h1>
-      <Search />
+      <HomeSearch />
       <HomeCards />
     </>
   );

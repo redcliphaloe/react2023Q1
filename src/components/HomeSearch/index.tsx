@@ -1,8 +1,8 @@
 import React from 'react';
 import './style.css';
 
-class Search extends React.Component {
-  #searchText = 'redcliphaloe-react2023Q1-components-search';
+class HomeSearch extends React.Component {
+  #searchText = 'redcliphaloe-react2023Q1-home-search';
 
   constructor(props: React.ReactPropTypes) {
     super(props);
@@ -35,4 +35,4 @@ class Search extends React.Component {
   }
 }
 
-export default Search;
+export default HomeSearch;
