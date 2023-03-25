@@ -1,4 +1,4 @@
-const cardsData = [
+const homeCardsData = [
   {
     num: '1',
     name: 'Большой шар с рисунком',
@@ -301,4 +301,4 @@ const cardsData = [
   },
 ];
 
-export default cardsData;
+export default homeCardsData;

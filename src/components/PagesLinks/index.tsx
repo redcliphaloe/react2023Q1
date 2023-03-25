@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import './PagesLinks.css';
+import './style.css';
 
 function PagesLinks() {
   return (

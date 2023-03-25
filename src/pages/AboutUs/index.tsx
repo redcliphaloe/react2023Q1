@@ -1,4 +1,4 @@
-import PagesLinks from '../components/PagesLinks';
+import PagesLinks from '../../components/PagesLinks';
 
 function AboutUs() {
   return (

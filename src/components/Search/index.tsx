@@ -1,5 +1,5 @@
 import React from 'react';
-import './Search.css';
+import './style.css';
 
 class Search extends React.Component {
   #searchText = 'redcliphaloe-react2023Q1-components-search';
