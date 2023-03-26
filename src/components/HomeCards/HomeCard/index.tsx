@@ -12,7 +12,7 @@ interface HomeCardData {
   favorite: string;
 }
 
-class Card extends React.Component {
+class HomeCard extends React.Component {
   constructor(props: HomeCardData) {
     super(props);
   }
@@ -34,4 +34,4 @@ class Card extends React.Component {
   }
 }
 
-export default Card;
+export default HomeCard;
