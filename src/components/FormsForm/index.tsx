@@ -2,16 +2,21 @@ import React from 'react';
 import { FormsFormData } from '../../specs/interfaces';
 import './style.css';
 
-type FormsFormProps = {
+interface FormsFormProps {
   sendData: (data: FormsFormData) => void;
   prevId: number;
-};
+}
 
-class FormsForm extends React.Component<FormsFormProps, object> {
+interface FormsFormState {
+  photo: string;
+}
+
+class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
   #defaultPhoto = '/src/assets/img/no-image.png';
   photo: React.RefObject<HTMLInputElement>;
   name: React.RefObject<HTMLInputElement>;
   male: React.RefObject<HTMLInputElement>;
+  female: React.RefObject<HTMLInputElement>;
   birthDate: React.RefObject<HTMLInputElement>;
   continent: React.RefObject<HTMLSelectElement>;
   agreement: React.RefObject<HTMLInputElement>;
@@ -21,9 +26,11 @@ class FormsForm extends React.Component<FormsFormProps, object> {
     this.photo = React.createRef();
     this.name = React.createRef();
     this.male = React.createRef();
+    this.female = React.createRef();
     this.birthDate = React.createRef();
     this.continent = React.createRef();
     this.agreement = React.createRef();
+    this.state = { photo: this.#defaultPhoto };
   }
 
   handleSubmit = (event: React.FormEvent) => {
@@ -33,7 +40,11 @@ class FormsForm extends React.Component<FormsFormProps, object> {
       id: this.props.prevId + 1,
       photo: this.#defaultPhoto,
       name: this.name.current?.value || '',
-      sex: this.male.current?.checked ? 'male' : 'female' || '',
+      sex: this.male.current?.checked
+        ? this.male.current?.value
+        : this.female.current?.checked
+        ? this.female.current?.value
+        : '',
       birhDate: this.birthDate.current?.value || '',
       continent: this.continent.current?.value || '',
     };
@@ -45,6 +56,14 @@ class FormsForm extends React.Component<FormsFormProps, object> {
     this.props.sendData(data);
   };
 
+  handleFileChange = () => {
+    if (this.photo.current?.files?.length && this.photo.current?.files[0].type.includes('image/')) {
+      this.setState({ photo: URL.createObjectURL(this.photo.current?.files[0]) });
+    } else {
+      this.setState({ photo: this.#defaultPhoto });
+    }
+  };
+
   render() {
     return (
       <form className="forms-form" onSubmit={this.handleSubmit}>
@@ -53,13 +72,19 @@ class FormsForm extends React.Component<FormsFormProps, object> {
             className="forms-form-photo__img"
             style={{
               backgroundImage: this.photo.current?.files?.length
-                ? `url(${this.#defaultPhoto})`
-                : `url(${this.#defaultPhoto})`,
+                ? `url(${this.state.photo})`
+                : `url(${this.state.photo})`,
             }}
           ></div>
           <label className="forms-form-photo__lbl" htmlFor="file">
             Upload photo
-            <input type="file" id="file" style={{ display: 'none' }} ref={this.photo} />
+            <input
+              type="file"
+              id="file"
+              style={{ display: 'none' }}
+              ref={this.photo}
+              onChange={this.handleFileChange}
+            />
           </label>
         </div>
         <div className="forms-form-inputs">
@@ -69,9 +94,9 @@ class FormsForm extends React.Component<FormsFormProps, object> {
           </label>
           <div>
             <label htmlFor="male">Sex: </label>
-            <input type="radio" name="sex" id="male" defaultChecked ref={this.male} />
+            <input type="radio" name="sex" id="male" value="Male" ref={this.male} />
             <label htmlFor="male">Male</label>
-            <input type="radio" name="sex" id="female" />
+            <input type="radio" name="sex" id="female" value="Female" ref={this.female} />
             <label htmlFor="female">Female</label>
           </div>
           <label htmlFor="birthDate">
@@ -81,6 +106,7 @@ class FormsForm extends React.Component<FormsFormProps, object> {
           <label htmlFor="continent">
             Continent:
             <select id="continent" ref={this.continent}>
+              <option hidden>Select from list</option>
               <option value="Eurasia">Eurasia</option>
               <option value="North America">North America</option>
               <option value="South America">South America</option>
