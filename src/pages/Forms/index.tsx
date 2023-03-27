@@ -29,7 +29,8 @@ class Home extends React.Component<
         <PagesLinks />
         <h1>Forms</h1>
         <FormsForm sendData={this.getFormData} prevId={this.state.formsFormDataIdCounter} />
-        <FormsCards />
+        <FormsCards formsFormData={this.state.formsFormData} />
+        {/* <FormsCards /> */}
       </>
     );
   }

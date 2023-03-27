@@ -8,7 +8,7 @@ type FormsFormProps = {
 };
 
 class FormsForm extends React.Component<FormsFormProps, object> {
-  #defaultPhoto = 'url(/src/assets/img/no-image.png)';
+  #defaultPhoto = '/src/assets/img/no-image.png';
   photo: React.RefObject<HTMLInputElement>;
   name: React.RefObject<HTMLInputElement>;
   male: React.RefObject<HTMLInputElement>;
@@ -53,8 +53,8 @@ class FormsForm extends React.Component<FormsFormProps, object> {
             className="forms-form-photo__img"
             style={{
               backgroundImage: this.photo.current?.files?.length
-                ? this.#defaultPhoto
-                : this.#defaultPhoto,
+                ? `url(${this.#defaultPhoto})`
+                : `url(${this.#defaultPhoto})`,
             }}
           ></div>
           <label className="forms-form-photo__lbl" htmlFor="file">
