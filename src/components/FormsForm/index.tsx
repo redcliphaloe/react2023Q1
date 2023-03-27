@@ -9,6 +9,25 @@ interface FormsFormProps {
 
 interface FormsFormState {
   photo: string;
+  isCorrectValues: boolean;
+}
+
+enum MandatoryType {
+  photo,
+  name,
+  sex,
+  birthDate,
+  continent,
+  agreement,
+}
+
+enum InvalidMessages {
+  photo = 'Photo not uploaded',
+  name = 'First name is missing or lowercase',
+  sex = 'Sex not selected',
+  birthDate = 'Date of birth not specified',
+  continent = 'Continent not selected',
+  agreement = 'Consent not accepted',
 }
 
 class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
@@ -20,6 +39,12 @@ class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
   birthDate: React.RefObject<HTMLInputElement>;
   continent: React.RefObject<HTMLSelectElement>;
   agreement: React.RefObject<HTMLInputElement>;
+  isPhotoCorrect = false;
+  isNameCorrect = false;
+  isSexCorrect = false;
+  isBirthDateCorrect = false;
+  isContinentCorrect = false;
+  isAgreementCorrect = false;
 
   constructor(props: FormsFormProps) {
     super(props);
@@ -30,11 +55,43 @@ class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
     this.birthDate = React.createRef();
     this.continent = React.createRef();
     this.agreement = React.createRef();
-    this.state = { photo: this.#defaultPhoto };
+    this.state = { photo: this.#defaultPhoto, isCorrectValues: true };
   }
 
   handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+
+    this.isPhotoCorrect = this.isCorrectValue(MandatoryType.photo, this.state.photo);
+    this.isNameCorrect = this.isCorrectValue(MandatoryType.name, this.name.current?.value || '');
+    this.isSexCorrect = this.isCorrectValue(
+      MandatoryType.sex,
+      this.male.current?.checked || this.female.current?.checked || false
+    );
+    this.isBirthDateCorrect = this.isCorrectValue(
+      MandatoryType.birthDate,
+      this.birthDate.current?.value || ''
+    );
+    this.isContinentCorrect = this.isCorrectValue(
+      MandatoryType.continent,
+      this.continent.current?.value || ''
+    );
+    this.isAgreementCorrect = this.isCorrectValue(
+      MandatoryType.agreement,
+      this.agreement.current?.checked || false
+    );
+    if (
+      !(
+        this.isPhotoCorrect &&
+        this.isNameCorrect &&
+        this.isSexCorrect &&
+        this.isBirthDateCorrect &&
+        this.isContinentCorrect &&
+        this.isAgreementCorrect
+      )
+    ) {
+      this.setState({ isCorrectValues: false });
+      return;
+    }
 
     const data = {
       id: this.props.prevId + 1,
@@ -45,13 +102,22 @@ class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
         : this.female.current?.checked
         ? this.female.current?.value
         : '',
-      birhDate: this.birthDate.current?.value || '',
+      birthDate: this.birthDate.current?.value || '',
       continent: this.continent.current?.value || '',
     };
 
     if (this.photo.current?.files?.length && this.photo.current?.files[0].type.includes('image/')) {
       data.photo = URL.createObjectURL(this.photo.current?.files[0]);
     }
+
+    this.name.current!.value = '';
+    this.male.current!.checked = false;
+    this.female.current!.checked = false;
+    this.birthDate.current!.value = '';
+    this.continent.current!.value = '';
+    this.agreement.current!.checked = false;
+
+    this.setState({ photo: this.#defaultPhoto, isCorrectValues: false });
 
     this.props.sendData(data);
   };
@@ -64,6 +130,25 @@ class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
     }
   };
 
+  isCorrectValue = (type: MandatoryType, value: string | boolean): boolean => {
+    switch (type) {
+      case MandatoryType.photo:
+        return !value.toString().includes(this.#defaultPhoto);
+      case MandatoryType.name:
+        return value !== '' && value.toString()[0] !== value.toString()[0].toLowerCase();
+      case MandatoryType.sex:
+        return !!value;
+      case MandatoryType.birthDate:
+        return value !== '';
+      case MandatoryType.continent:
+        return value !== '';
+      case MandatoryType.agreement:
+        return !!value;
+      default:
+        return false;
+    }
+  };
+
   render() {
     return (
       <form className="forms-form" onSubmit={this.handleSubmit}>
@@ -71,9 +156,7 @@ class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
           <div
             className="forms-form-photo__img"
             style={{
-              backgroundImage: this.photo.current?.files?.length
-                ? `url(${this.state.photo})`
-                : `url(${this.state.photo})`,
+              backgroundImage: `url(${this.state.photo})`,
             }}
           ></div>
           <label className="forms-form-photo__lbl" htmlFor="file">
@@ -106,7 +189,7 @@ class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
           <label htmlFor="continent">
             Continent:
             <select id="continent" ref={this.continent}>
-              <option hidden>Select from list</option>
+              <option value="" hidden></option>
               <option value="Eurasia">Eurasia</option>
               <option value="North America">North America</option>
               <option value="South America">South America</option>
