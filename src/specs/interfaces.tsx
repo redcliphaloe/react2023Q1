@@ -3,6 +3,6 @@ export interface FormsFormData {
   photo: string;
   name: string;
   sex: string;
-  birhDate: string;
+  birthDate: string;
   continent: string;
 }
