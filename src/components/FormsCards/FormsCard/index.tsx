@@ -9,7 +9,6 @@ class FormsCard extends React.Component {
 
   render() {
     const formsFormData = this.props as FormsFormData;
-    console.log(formsFormData);
     return (
       <div className="forms-card">
         <div
