@@ -4,7 +4,7 @@ import './style.css';
 
 class InvalidMessage extends React.Component<{ visible: boolean; message: InvalidMessages }> {
   render() {
-    return <p className="invalid-message">{this.props.visible ? this.props.message : ' '}</p>;
+    return <p className="invalid-message">{this.props.visible ? this.props.message : ''}</p>;
   }
 }
 

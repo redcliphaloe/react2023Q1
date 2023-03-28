@@ -1,0 +1,17 @@
+.forms-form-modal-message {
+  z-index: 2;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 400px;
+  left: calc(50% - 200px);
+  top: calc(50% - 75px);
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: white;
+  text-align: center;
+  font-size: 2em;
+}

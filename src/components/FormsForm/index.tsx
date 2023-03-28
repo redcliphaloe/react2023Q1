@@ -3,6 +3,7 @@ import { FormsFormData } from '../../specs/interfaces';
 import { InvalidMessages } from '../../specs/enums';
 import InvalidMessage from './InvalidMessage';
 import './style.css';
+import ModalMessage from './ModalMessage';
 
 interface FormsFormProps {
   sendData: (data: FormsFormData) => void;
@@ -12,6 +13,7 @@ interface FormsFormProps {
 interface FormsFormState {
   photo: string;
   isCorrectValues: boolean;
+  submitMessageVisible: boolean;
 }
 
 enum MandatoryType {
@@ -48,7 +50,7 @@ class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
     this.birthDate = React.createRef();
     this.continent = React.createRef();
     this.agreement = React.createRef();
-    this.state = { photo: this.#defaultPhoto, isCorrectValues: true };
+    this.state = { photo: this.#defaultPhoto, isCorrectValues: true, submitMessageVisible: false };
   }
 
   handleSubmit = (event: React.FormEvent) => {
@@ -111,8 +113,14 @@ class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
     this.birthDate.current!.value = '';
     this.continent.current!.value = '';
     this.agreement.current!.checked = false;
-
-    this.setState({ photo: this.#defaultPhoto, isCorrectValues: false });
+    this.setState(
+      {
+        photo: this.#defaultPhoto,
+        isCorrectValues: false,
+        submitMessageVisible: true,
+      },
+      () => setTimeout(() => this.setState({ submitMessageVisible: false }), 3000)
+    );
   };
 
   handleFileChange = () => {
@@ -205,6 +213,7 @@ class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
           <InvalidMessage visible={!this.isAgreementCorrect} message={InvalidMessages.agreement} />
         </div>
         <input type="submit" value="Submit" />
+        <ModalMessage visible={this.state.submitMessageVisible} message="The data has been saved" />
       </form>
     );
   }
