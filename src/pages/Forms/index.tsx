@@ -4,11 +4,11 @@ import FormsForm from '../../components/FormsForm';
 import FormsCards from '../../components/FormsCards';
 import { FormsFormData } from '../../specs/interfaces';
 
-class Home extends React.Component<
-  React.ReactPropTypes,
+class Forms extends React.Component<
+  object,
   { formsFormData: FormsFormData[]; formsFormDataIdCounter: number }
 > {
-  constructor(props: React.ReactPropTypes) {
+  constructor(props: object) {
     super(props);
     this.state = {
       formsFormData: [],
@@ -35,4 +35,4 @@ class Home extends React.Component<
   }
 }
 
-export default Home;
+export default Forms;
