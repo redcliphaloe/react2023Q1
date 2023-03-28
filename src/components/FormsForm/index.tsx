@@ -1,5 +1,7 @@
 import React from 'react';
 import { FormsFormData } from '../../specs/interfaces';
+import { InvalidMessages } from '../../specs/enums';
+import InvalidMessage from './InvalidMessage';
 import './style.css';
 
 interface FormsFormProps {
@@ -21,15 +23,6 @@ enum MandatoryType {
   agreement,
 }
 
-enum InvalidMessages {
-  photo = 'Photo not uploaded',
-  name = 'First name is missing or lowercase',
-  sex = 'Sex not selected',
-  birthDate = 'Date of birth not specified',
-  continent = 'Continent not selected',
-  agreement = 'Consent not accepted',
-}
-
 class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
   #defaultPhoto = '/src/assets/img/no-image.png';
   photo: React.RefObject<HTMLInputElement>;
@@ -39,12 +32,12 @@ class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
   birthDate: React.RefObject<HTMLInputElement>;
   continent: React.RefObject<HTMLSelectElement>;
   agreement: React.RefObject<HTMLInputElement>;
-  isPhotoCorrect = false;
-  isNameCorrect = false;
-  isSexCorrect = false;
-  isBirthDateCorrect = false;
-  isContinentCorrect = false;
-  isAgreementCorrect = false;
+  isPhotoCorrect = true;
+  isNameCorrect = true;
+  isSexCorrect = true;
+  isBirthDateCorrect = true;
+  isContinentCorrect = true;
+  isAgreementCorrect = true;
 
   constructor(props: FormsFormProps) {
     super(props);
@@ -110,6 +103,8 @@ class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
       data.photo = URL.createObjectURL(this.photo.current?.files[0]);
     }
 
+    this.props.sendData(data);
+
     this.name.current!.value = '';
     this.male.current!.checked = false;
     this.female.current!.checked = false;
@@ -118,8 +113,6 @@ class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
     this.agreement.current!.checked = false;
 
     this.setState({ photo: this.#defaultPhoto, isCorrectValues: false });
-
-    this.props.sendData(data);
   };
 
   handleFileChange = () => {
@@ -130,7 +123,7 @@ class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
     }
   };
 
-  isCorrectValue = (type: MandatoryType, value: string | boolean): boolean => {
+  isCorrectValue = (type: MandatoryType, value: string | boolean) => {
     switch (type) {
       case MandatoryType.photo:
         return !value.toString().includes(this.#defaultPhoto);
@@ -169,12 +162,14 @@ class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
               onChange={this.handleFileChange}
             />
           </label>
+          <InvalidMessage visible={!this.isPhotoCorrect} message={InvalidMessages.photo} />
         </div>
         <div className="forms-form-inputs">
           <label htmlFor="name">
             Name:
             <input type="text" id="name" ref={this.name} />
           </label>
+          <InvalidMessage visible={!this.isNameCorrect} message={InvalidMessages.name} />
           <div>
             <label htmlFor="male">Sex: </label>
             <input type="radio" name="sex" id="male" value="Male" ref={this.male} />
@@ -182,10 +177,12 @@ class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
             <input type="radio" name="sex" id="female" value="Female" ref={this.female} />
             <label htmlFor="female">Female</label>
           </div>
+          <InvalidMessage visible={!this.isSexCorrect} message={InvalidMessages.sex} />
           <label htmlFor="birthDate">
             Date of birth:
             <input type="date" id="birthDate" ref={this.birthDate} />
           </label>
+          <InvalidMessage visible={!this.isBirthDateCorrect} message={InvalidMessages.birthDate} />
           <label htmlFor="continent">
             Continent:
             <select id="continent" ref={this.continent}>
@@ -198,11 +195,15 @@ class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
               <option value="Antarctica">Antarctica</option>
             </select>
           </label>
+          <InvalidMessage visible={!this.isContinentCorrect} message={InvalidMessages.continent} />
         </div>
-        <label htmlFor="agreement">
-          <input type="checkbox" id="agreement" ref={this.agreement} /> I consent to my personal
-          data
-        </label>
+        <div>
+          <label htmlFor="agreement">
+            <input type="checkbox" id="agreement" ref={this.agreement} /> I consent to my personal
+            data
+          </label>
+          <InvalidMessage visible={!this.isAgreementCorrect} message={InvalidMessages.agreement} />
+        </div>
         <input type="submit" value="Submit" />
       </form>
     );
