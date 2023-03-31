@@ -1,0 +1,35 @@
+.forms-card {
+  position: relative;
+  outline: 1px solid black;
+  border-radius: 5px;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.forms-card:hover {
+  outline: 5px solid #0075ff;
+}
+
+.forms-card_hidden {
+  display: none;
+}
+
+.forms-card__img {
+  width: 150px;
+  height: 150px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+}
+
+.forms-card h3,
+.forms-card p {
+  margin: 0;
+}
