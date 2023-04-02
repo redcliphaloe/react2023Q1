@@ -1,5 +1,3 @@
-import { MutableRefObject } from 'react';
-
 export interface FormsFormData {
   id: number;
   photo: string;
@@ -7,8 +5,4 @@ export interface FormsFormData {
   sex: string;
   birthDate: string;
   continent: string;
-}
-
-export interface HomeSearchPropTypes {
-  focusedEl: MutableRefObject<HTMLInputElement>;
 }
