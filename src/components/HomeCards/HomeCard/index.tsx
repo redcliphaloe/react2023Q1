@@ -12,26 +12,21 @@ interface HomeCardData {
   favorite: string;
 }
 
-class HomeCard extends React.Component {
-  constructor(props: HomeCardData) {
-    super(props);
-  }
+function HomeCard(props: HomeCardData) {
+  const { name, count, year, shape, color, size, favorite } = props;
 
-  render() {
-    const homeCardData = this.props as HomeCardData;
-    return (
-      <div className="home-card">
-        <h3 className="home-card__name">{homeCardData.name}</h3>
-        <div className="home-card__img"></div>
-        <p className="home-card__count">Количество: {homeCardData.count}</p>
-        <p className="home-card__year">Год выхода: {homeCardData.year}</p>
-        <p className="home-card__shape">Форма: {homeCardData.shape}</p>
-        <p className="home-card__color">Цвет: {homeCardData.color}</p>
-        <p className="home-card__size">Размер: {homeCardData.size}</p>
-        <p className="home-card__favorite">Популярный: {homeCardData.favorite}</p>
-      </div>
-    );
-  }
+  return (
+    <div className="home-card">
+      <h3 className="home-card__name">{name}</h3>
+      <div className="home-card__img"></div>
+      <p className="home-card__count">Количество: {count}</p>
+      <p className="home-card__year">Год выхода: {year}</p>
+      <p className="home-card__shape">Форма: {shape}</p>
+      <p className="home-card__color">Цвет: {color}</p>
+      <p className="home-card__size">Размер: {size}</p>
+      <p className="home-card__favorite">Популярный: {favorite}</p>
+    </div>
+  );
 }
 
 export default HomeCard;
