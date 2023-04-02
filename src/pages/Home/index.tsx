@@ -8,11 +8,13 @@ function Home() {
 
   useEffect(() => focusedEl.current.focus());
 
+  const homeSearchProps = { focusedEl: focusedEl };
+
   return (
     <>
       <PagesLinks />
       <h1>Home</h1>
-      <HomeSearch {...{ focusedEl: focusedEl }} />
+      <HomeSearch {...homeSearchProps} />
       <HomeCards />
     </>
   );
