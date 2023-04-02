@@ -1,11 +1,15 @@
-import React from 'react';
 import { InvalidMessages } from '../../../specs/enums';
 import './style.css';
 
-class InvalidMessage extends React.Component<{ visible: boolean; message: InvalidMessages }> {
-  render() {
-    return <p className="invalid-message">{this.props.visible ? this.props.message : ''}</p>;
-  }
+interface InvalidMessagePropsType {
+  visible: boolean;
+  message: InvalidMessages;
+}
+
+function InvalidMessage(props: InvalidMessagePropsType) {
+  const { visible, message } = props;
+
+  return <p className="invalid-message">{visible ? message : ''}</p>;
 }
 
 export default InvalidMessage;
