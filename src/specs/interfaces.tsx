@@ -5,4 +5,5 @@ export interface FormsFormData {
   sex: string;
   birthDate: string;
   continent: string;
+  agreement: boolean;
 }

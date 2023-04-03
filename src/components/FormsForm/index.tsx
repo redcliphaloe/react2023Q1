@@ -1,19 +1,14 @@
-import React from 'react';
+import { ChangeEvent, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { FormsFormData } from '../../specs/interfaces';
 import { InvalidMessages } from '../../specs/enums';
 import InvalidMessage from './InvalidMessage';
-import './style.css';
 import ModalMessage from './ModalMessage';
+import './style.css';
 
-interface FormsFormProps {
+interface FormsFormPropsType {
   sendData: (data: FormsFormData) => void;
   prevId: number;
-}
-
-interface FormsFormState {
-  photo: string;
-  isCorrectValues: boolean;
-  submitMessageVisible: boolean;
 }
 
 enum MandatoryType {
@@ -25,120 +20,26 @@ enum MandatoryType {
   agreement,
 }
 
-class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
-  #defaultPhoto = '/src/assets/img/no-image.png';
-  photo: React.RefObject<HTMLInputElement>;
-  name: React.RefObject<HTMLInputElement>;
-  male: React.RefObject<HTMLInputElement>;
-  female: React.RefObject<HTMLInputElement>;
-  birthDate: React.RefObject<HTMLInputElement>;
-  continent: React.RefObject<HTMLSelectElement>;
-  agreement: React.RefObject<HTMLInputElement>;
-  isPhotoCorrect = true;
-  isNameCorrect = true;
-  isSexCorrect = true;
-  isBirthDateCorrect = true;
-  isContinentCorrect = true;
-  isAgreementCorrect = true;
+function FormsForm(props: FormsFormPropsType) {
+  const defaultPhoto = '/src/assets/img/no-image.png';
+  const { sendData, prevId } = props;
+  const [photo, setPhoto] = useState(defaultPhoto);
+  const [submitMessageVisible, setSubmitMessageVisible] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormsFormData>();
 
-  constructor(props: FormsFormProps) {
-    super(props);
-    this.photo = React.createRef();
-    this.name = React.createRef();
-    this.male = React.createRef();
-    this.female = React.createRef();
-    this.birthDate = React.createRef();
-    this.continent = React.createRef();
-    this.agreement = React.createRef();
-    this.state = { photo: this.#defaultPhoto, isCorrectValues: true, submitMessageVisible: false };
-  }
-
-  handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-
-    this.isPhotoCorrect = this.isCorrectValue(MandatoryType.photo, this.state.photo);
-    this.isNameCorrect = this.isCorrectValue(MandatoryType.name, this.name.current?.value || '');
-    this.isSexCorrect = this.isCorrectValue(
-      MandatoryType.sex,
-      this.male.current?.checked || this.female.current?.checked || false
-    );
-    this.isBirthDateCorrect = this.isCorrectValue(
-      MandatoryType.birthDate,
-      this.birthDate.current?.value || ''
-    );
-    this.isContinentCorrect = this.isCorrectValue(
-      MandatoryType.continent,
-      this.continent.current?.value || ''
-    );
-    this.isAgreementCorrect = this.isCorrectValue(
-      MandatoryType.agreement,
-      this.agreement.current?.checked || false
-    );
-    if (
-      !(
-        this.isPhotoCorrect &&
-        this.isNameCorrect &&
-        this.isSexCorrect &&
-        this.isBirthDateCorrect &&
-        this.isContinentCorrect &&
-        this.isAgreementCorrect
-      )
-    ) {
-      this.setState({ isCorrectValues: false });
-      return;
-    }
-
-    const data = {
-      id: this.props.prevId + 1,
-      photo: this.#defaultPhoto,
-      name: this.name.current?.value || '',
-      sex: this.male.current?.checked
-        ? this.male.current?.value
-        : this.female.current?.checked
-        ? this.female.current?.value
-        : '',
-      birthDate: this.birthDate.current?.value || '',
-      continent: this.continent.current?.value || '',
-    };
-
-    if (this.photo.current?.files?.length && this.photo.current?.files[0].type.includes('image/')) {
-      data.photo = URL.createObjectURL(this.photo.current?.files[0]);
-    }
-
-    this.props.sendData(data);
-
-    this.name.current!.value = '';
-    this.male.current!.checked = false;
-    this.female.current!.checked = false;
-    this.birthDate.current!.value = '';
-    this.continent.current!.value = '';
-    this.agreement.current!.checked = false;
-    this.setState(
-      {
-        photo: this.#defaultPhoto,
-        isCorrectValues: false,
-        submitMessageVisible: true,
-      },
-      () => setTimeout(() => this.setState({ submitMessageVisible: false }), 3000)
-    );
-  };
-
-  handleFileChange = () => {
-    if (this.photo.current?.files?.length && this.photo.current?.files[0].type.includes('image/')) {
-      this.setState({ photo: URL.createObjectURL(this.photo.current?.files[0]) });
-    } else {
-      this.setState({ photo: this.#defaultPhoto });
-    }
-  };
-
-  isCorrectValue = (type: MandatoryType, value: string | boolean) => {
+  const isCorrectValue = (type: MandatoryType, value: string | boolean) => {
     switch (type) {
       case MandatoryType.photo:
-        return !value.toString().includes(this.#defaultPhoto);
+        return !value.toString().includes(defaultPhoto);
       case MandatoryType.name:
         return value !== '' && value.toString()[0] !== value.toString()[0].toLowerCase();
       case MandatoryType.sex:
-        return !!value;
+        return value === 'Male' || value === 'Female';
       case MandatoryType.birthDate:
         return value !== '';
       case MandatoryType.continent:
@@ -150,73 +51,143 @@ class FormsForm extends React.Component<FormsFormProps, FormsFormState> {
     }
   };
 
-  render() {
-    return (
-      <form className="forms-form" onSubmit={this.handleSubmit}>
-        <div className="forms-form-photo">
-          <div
-            className="forms-form-photo__img"
-            style={{
-              backgroundImage: `url(${this.state.photo})`,
-            }}
-          ></div>
-          <label className="forms-form-photo__lbl" htmlFor="file">
-            Upload photo
-            <input
-              type="file"
-              id="file"
-              style={{ display: 'none' }}
-              ref={this.photo}
-              onChange={this.handleFileChange}
-            />
-          </label>
-          <InvalidMessage visible={!this.isPhotoCorrect} message={InvalidMessages.photo} />
-        </div>
-        <div className="forms-form-inputs">
-          <label htmlFor="name">
-            Name:
-            <input type="text" id="name" ref={this.name} />
-          </label>
-          <InvalidMessage visible={!this.isNameCorrect} message={InvalidMessages.name} />
-          <div>
-            <label htmlFor="male">Sex: </label>
-            <input type="radio" name="sex" id="male" value="Male" ref={this.male} />
-            <label htmlFor="male">Male</label>
-            <input type="radio" name="sex" id="female" value="Female" ref={this.female} />
-            <label htmlFor="female">Female</label>
-          </div>
-          <InvalidMessage visible={!this.isSexCorrect} message={InvalidMessages.sex} />
-          <label htmlFor="birthDate">
-            Date of birth:
-            <input type="date" id="birthDate" ref={this.birthDate} />
-          </label>
-          <InvalidMessage visible={!this.isBirthDateCorrect} message={InvalidMessages.birthDate} />
-          <label htmlFor="continent">
-            Continent:
-            <select id="continent" ref={this.continent}>
-              <option value="" hidden></option>
-              <option value="Eurasia">Eurasia</option>
-              <option value="North America">North America</option>
-              <option value="South America">South America</option>
-              <option value="Africa">Africa</option>
-              <option value="Australia">Australia</option>
-              <option value="Antarctica">Antarctica</option>
-            </select>
-          </label>
-          <InvalidMessage visible={!this.isContinentCorrect} message={InvalidMessages.continent} />
-        </div>
+  const onSubmit = (submitedData: FormsFormData) => {
+    const data = {
+      id: prevId + 1,
+      photo: photo,
+      name: submitedData.name,
+      sex: submitedData.sex,
+      birthDate: submitedData.birthDate,
+      continent: submitedData.continent,
+      agreement: submitedData.agreement,
+    };
+    setSubmitMessageVisible(true);
+    setTimeout(() => {
+      sendData(data);
+      setPhoto(defaultPhoto);
+      reset();
+      setSubmitMessageVisible(false);
+    }, 1000);
+  };
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files?.length && files[0].type.includes('image/')) {
+      setPhoto(URL.createObjectURL(files[0]));
+    } else {
+      setPhoto(defaultPhoto);
+    }
+  };
+
+  return (
+    <form className="forms-form" onSubmit={handleSubmit(onSubmit)}>
+      <div className="forms-form-photo">
+        <div
+          className="forms-form-photo__img"
+          style={{
+            backgroundImage: `url(${photo})`,
+          }}
+        ></div>
+        <label className="forms-form-photo__lbl" htmlFor="file">
+          Upload photo
+          <input
+            type="file"
+            id="file"
+            style={{ display: 'none' }}
+            {...register('photo', {
+              onChange: (e) => handleFileChange(e),
+              validate: () => isCorrectValue(MandatoryType.photo, photo),
+            })}
+          />
+        </label>
+        <InvalidMessage
+          {...{
+            visible: !!errors.photo,
+            message: InvalidMessages.photo,
+          }}
+        />
+      </div>
+      <div className="forms-form-inputs">
+        <label htmlFor="name">
+          Name:
+          <input
+            type="text"
+            id="name"
+            {...register('name', {
+              validate: (value) => isCorrectValue(MandatoryType.name, value),
+            })}
+          />
+        </label>
+        <InvalidMessage {...{ visible: !!errors.name, message: InvalidMessages.name }} />
         <div>
-          <label htmlFor="agreement">
-            <input type="checkbox" id="agreement" ref={this.agreement} /> I consent to my personal
-            data
-          </label>
-          <InvalidMessage visible={!this.isAgreementCorrect} message={InvalidMessages.agreement} />
+          <label htmlFor="male">Sex: </label>
+          <input
+            type="radio"
+            id="male"
+            value="Male"
+            {...register('sex', {
+              validate: (value) => isCorrectValue(MandatoryType.sex, value),
+            })}
+          />
+          <label htmlFor="male">Male</label>
+          <input
+            type="radio"
+            id="female"
+            value="Female"
+            {...register('sex', {
+              validate: (value) => isCorrectValue(MandatoryType.sex, value),
+            })}
+          />
+          <label htmlFor="female">Female</label>
         </div>
-        <input type="submit" value="Submit" />
-        <ModalMessage visible={this.state.submitMessageVisible} message="The data has been saved" />
-      </form>
-    );
-  }
+        <InvalidMessage {...{ visible: !!errors.sex, message: InvalidMessages.sex }} />
+        <label htmlFor="birthDate">
+          Date of birth:
+          <input
+            type="date"
+            id="birthDate"
+            {...register('birthDate', {
+              validate: (value) => isCorrectValue(MandatoryType.birthDate, value),
+            })}
+          />
+        </label>
+        <InvalidMessage {...{ visible: !!errors.birthDate, message: InvalidMessages.birthDate }} />
+        <label htmlFor="continent">
+          Continent:
+          <select
+            id="continent"
+            {...register('continent', {
+              validate: (value) => isCorrectValue(MandatoryType.continent, value),
+            })}
+          >
+            <option value="" hidden></option>
+            <option value="Eurasia">Eurasia</option>
+            <option value="North America">North America</option>
+            <option value="South America">South America</option>
+            <option value="Africa">Africa</option>
+            <option value="Australia">Australia</option>
+            <option value="Antarctica">Antarctica</option>
+          </select>
+        </label>
+        <InvalidMessage {...{ visible: !!errors.continent, message: InvalidMessages.continent }} />
+      </div>
+      <div>
+        <label htmlFor="agreement">
+          <input
+            type="checkbox"
+            id="agreement"
+            {...register('agreement', {
+              validate: (value) => isCorrectValue(MandatoryType.agreement, value),
+            })}
+          />{' '}
+          I consent to my personal data
+        </label>
+        <InvalidMessage {...{ visible: !!errors.agreement, message: InvalidMessages.agreement }} />
+      </div>
+      <input type="submit" value="Submit" />
+      <ModalMessage {...{ visible: submitMessageVisible, message: 'The data has been saved' }} />
+    </form>
+  );
 }
 
 export default FormsForm;

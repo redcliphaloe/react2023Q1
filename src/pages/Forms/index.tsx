@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PagesLinks from '../../components/PagesLinks';
 import FormsForm from '../../components/FormsForm';
 import FormsCards from '../../components/FormsCards';
