@@ -1,4 +1,4 @@
-import { ChangeEvent, MutableRefObject, useEffect, useState } from 'react';
+import { ChangeEvent, MutableRefObject, useEffect, useRef, useState } from 'react';
 import './style.css';
 
 interface HomeSearchPropsType {
@@ -8,14 +8,21 @@ interface HomeSearchPropsType {
 function HomeSearch(props: HomeSearchPropsType) {
   const storageKey = 'redcliphaloe-react2023Q1-home-search';
   const { focusedEl } = props;
-  const [searchValue, setsearchValue] = useState(localStorage.getItem(storageKey) || '');
+  const [searchValue, setSearchValue] = useState(localStorage.getItem(storageKey) || '');
+  const storageValue = useRef(searchValue);
 
   useEffect(() => {
-    localStorage.setItem(storageKey, searchValue);
+    storageValue.current = searchValue;
   }, [searchValue]);
 
+  useEffect(() => {
+    return () => {
+      localStorage.setItem(storageKey, storageValue.current);
+    };
+  }, []);
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setsearchValue(event.target.value);
+    setSearchValue(event.target.value);
   };
 
   return (
