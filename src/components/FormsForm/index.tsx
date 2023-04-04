@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormsFormData } from '../../specs/interfaces';
 import { InvalidMessages } from '../../specs/enums';
@@ -9,6 +9,10 @@ import './style.css';
 interface FormsFormPropsType {
   sendData: (data: FormsFormData) => void;
   prevId: number;
+}
+
+interface OtherFormElements {
+  agreement: boolean;
 }
 
 enum MandatoryType {
@@ -22,6 +26,7 @@ enum MandatoryType {
 
 function FormsForm(props: FormsFormPropsType) {
   const defaultPhoto = '/src/assets/img/no-image.png';
+  const hasPhoto = useRef(false);
   const { sendData, prevId } = props;
   const [photo, setPhoto] = useState(defaultPhoto);
   const [submitMessageVisible, setSubmitMessageVisible] = useState(false);
@@ -30,20 +35,28 @@ function FormsForm(props: FormsFormPropsType) {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<FormsFormData>();
+  } = useForm<FormsFormData & OtherFormElements>();
 
-  const isCorrectValue = (type: MandatoryType, value: string | boolean) => {
+  const isCorrectValue = (
+    type: Exclude<MandatoryType, MandatoryType.photo | MandatoryType.agreement>,
+    value: string
+  ) => {
     switch (type) {
-      case MandatoryType.photo:
-        return !value.toString().includes(defaultPhoto);
       case MandatoryType.name:
-        return value !== '' && value.toString()[0] !== value.toString()[0].toLowerCase();
+        return value !== '' && value !== value.toLowerCase();
       case MandatoryType.sex:
-        return value === 'Male' || value === 'Female';
+        return !!value;
       case MandatoryType.birthDate:
         return value !== '';
       case MandatoryType.continent:
         return value !== '';
+      default:
+        return false;
+    }
+  };
+
+  const isChecked = (type: Extract<MandatoryType, MandatoryType.agreement>, value: boolean) => {
+    switch (type) {
       case MandatoryType.agreement:
         return !!value;
       default:
@@ -59,12 +72,12 @@ function FormsForm(props: FormsFormPropsType) {
       sex: submitedData.sex,
       birthDate: submitedData.birthDate,
       continent: submitedData.continent,
-      agreement: submitedData.agreement,
     };
     setSubmitMessageVisible(true);
     setTimeout(() => {
       sendData(data);
       setPhoto(defaultPhoto);
+      hasPhoto.current = false;
       reset();
       setSubmitMessageVisible(false);
     }, 1000);
@@ -72,10 +85,9 @@ function FormsForm(props: FormsFormPropsType) {
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
-    if (files?.length && files[0].type.includes('image/')) {
+    if (files?.length) {
       setPhoto(URL.createObjectURL(files[0]));
-    } else {
-      setPhoto(defaultPhoto);
+      hasPhoto.current = true;
     }
   };
 
@@ -92,11 +104,12 @@ function FormsForm(props: FormsFormPropsType) {
           Upload photo
           <input
             type="file"
+            accept="image/png, image/jpeg"
             id="file"
             style={{ display: 'none' }}
             {...register('photo', {
               onChange: (e) => handleFileChange(e),
-              validate: () => isCorrectValue(MandatoryType.photo, photo),
+              validate: () => hasPhoto.current,
             })}
           />
         </label>
@@ -177,7 +190,7 @@ function FormsForm(props: FormsFormPropsType) {
             type="checkbox"
             id="agreement"
             {...register('agreement', {
-              validate: (value) => isCorrectValue(MandatoryType.agreement, value),
+              validate: (value) => isChecked(MandatoryType.agreement, value),
             })}
           />{' '}
           I consent to my personal data
