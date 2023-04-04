@@ -1,14 +1,16 @@
 import './style.css';
 
-interface ModalMessageProps {
+interface ModalMessagePropsType {
   visible: boolean;
   message: string;
 }
 
-function ModalMessage(props: ModalMessageProps) {
-  return props.visible ? (
+function ModalMessage(props: ModalMessagePropsType) {
+  const { visible, message } = props;
+
+  return visible ? (
     <div className="forms-form-modal-message">
-      <p>{props.message}</p>
+      <p>{message}</p>
     </div>
   ) : (
     <></>
