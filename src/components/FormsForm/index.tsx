@@ -64,6 +64,12 @@ function FormsForm(props: FormsFormPropsType) {
     }
   };
 
+  const clearForm = () => {
+    setPhoto(defaultPhoto);
+    hasPhoto.current = false;
+    reset();
+  };
+
   const onSubmit = (submitedData: FormsFormData) => {
     const data = {
       id: prevId + 1,
@@ -76,9 +82,7 @@ function FormsForm(props: FormsFormPropsType) {
     setSubmitMessageVisible(true);
     setTimeout(() => {
       sendData(data);
-      setPhoto(defaultPhoto);
-      hasPhoto.current = false;
-      reset();
+      clearForm();
       setSubmitMessageVisible(false);
     }, 1000);
   };
