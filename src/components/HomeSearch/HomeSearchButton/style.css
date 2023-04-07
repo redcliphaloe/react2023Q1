@@ -2,8 +2,8 @@
   position: absolute;
   width: 20px;
   height: 20px;
-  top: 4px;
-  left: 169px;
+  top: 2px;
+  right: 18px;
   background-image: url("../../../assets/svg/xmark.svg");
   background-repeat: no-repeat;
   background-size: contain;
@@ -29,8 +29,8 @@
   position: absolute;
   width: 17px;
   height: 15px;
-  top: 7px;
-  left: 189px;
+  top: 5px;
+  right: 3px;
   background-image: url("../../../assets/svg/magnifying-glass.svg");
   background-repeat: no-repeat;
   background-size: contain;
