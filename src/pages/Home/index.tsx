@@ -18,9 +18,8 @@ function Home() {
     <>
       <PagesLinks />
       <h1>Home</h1>
-      <div>{searchValue}</div>
       <HomeSearch {...homeSearchProps} />
-      <HomeCards />
+      <HomeCards {...{ searchValue }} />
     </>
   );
 }

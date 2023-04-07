@@ -30,12 +30,12 @@ function HomeSearch(props: HomeSearchPropsType) {
   }, [searchValue]);
 
   useEffect(() => {
+    sendSearchValue(searchValue);
     return () => {
       localStorage.setItem(storageKey, storageValue.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  sendSearchValue(searchValue);
 
   const clearBtnProps = {
     className: 'search__clear',
