@@ -1,15 +1,29 @@
-import { ChangeEvent, MutableRefObject, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, MutableRefObject, useEffect, useRef, useState } from 'react';
 import './style.css';
+import HomeSearchButton from './HomeSearchButton';
 
 interface HomeSearchPropsType {
-  focusedEl: MutableRefObject<HTMLInputElement>;
+  searchRef: MutableRefObject<HTMLInputElement>;
+  sendSearchValue: (data: string) => void;
+}
+
+enum KeyCodes {
+  enter = 'Enter',
 }
 
 function HomeSearch(props: HomeSearchPropsType) {
   const storageKey = 'redcliphaloe-react2023Q1-home-search';
-  const { focusedEl } = props;
+  const { searchRef, sendSearchValue } = props;
   const [searchValue, setSearchValue] = useState(localStorage.getItem(storageKey) || '');
   const storageValue = useRef(searchValue);
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
+  };
+  const handleKeyUp = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === KeyCodes.enter && searchValue) {
+      sendSearchValue(searchValue);
+    }
+  };
 
   useEffect(() => {
     storageValue.current = searchValue;
@@ -21,13 +35,25 @@ function HomeSearch(props: HomeSearchPropsType) {
     };
   }, []);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value);
+  sendSearchValue(searchValue);
+
+  const clearBtnProps = {
+    className: 'search__clear',
+    onClick: () => {
+      setSearchValue('');
+      searchRef.current.focus();
+    },
+  };
+  const submitBtnProps = {
+    className: 'search__submit',
+    onClick: () => {
+      sendSearchValue(searchValue);
+      searchRef.current.focus();
+    },
   };
 
   return (
     <div className="search">
-      <div className="search__img"></div>
       <input
         className="search__text"
         type="text"
@@ -35,9 +61,11 @@ function HomeSearch(props: HomeSearchPropsType) {
         autoComplete="off"
         value={searchValue}
         onChange={handleChange}
-        ref={focusedEl}
+        onKeyUp={handleKeyUp}
+        ref={searchRef}
       />
-      <button className="search__clear"></button>
+      {searchValue && <HomeSearchButton {...clearBtnProps} />}
+      {searchValue && <HomeSearchButton {...submitBtnProps} />}
     </div>
   );
 }
