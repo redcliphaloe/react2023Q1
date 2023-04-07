@@ -4,52 +4,6 @@
   margin: 0 auto;
 }
 
-.search__img {
-  position: absolute;
-  width: 15px;
-  height: 15px;
-  top: 6px;
-  left: 189px;
-  background-image: url("../../assets/svg/magnifying-glass.svg");
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-  background-color: transparent;
-  opacity: 0.5;
-}
-
 .search__text {
   width: 100%;
-}
-
-.search__clear {
-  display: none;
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  top: 4px;
-  left: 169px;
-  background-image: url("../../assets/svg/xmark.svg");
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  padding: 0;
-}
-
-.search__clear:focus,
-.search__clear:focus-visible {
-  outline: none;
-}
-
-.search__clear_visible {
-  display: block;
-  opacity: 0.5;
-  transition: 0.3s;
-}
-
-.search__clear_visible:hover {
-  opacity: 1;
 }
