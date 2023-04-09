@@ -18,7 +18,12 @@ function HomeCard(props: HomeCardAltData) {
   return (
     <div className="home-card">
       <h3 className="home-card__name">{title}</h3>
-      <img src={`https://live.staticflickr.com/${server}/${id}_${secret}.jpg`} alt="photo" />
+      <div
+        className="home-card__img"
+        style={{
+          backgroundImage: `url(https://live.staticflickr.com/${server}/${id}_${secret}.jpg)`,
+        }}
+      />
     </div>
   );
 }
