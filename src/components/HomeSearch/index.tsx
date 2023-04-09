@@ -1,72 +1,81 @@
 import { ChangeEvent, KeyboardEvent, MutableRefObject, useEffect, useRef, useState } from 'react';
 import './style.css';
 import HomeSearchButton from './HomeSearchButton';
-
-interface HomeSearchPropsType {
-  searchRef: MutableRefObject<HTMLInputElement>;
-  sendSearchValue: (data: string) => void;
-}
+import Loader from '../Loader';
+import useFetch from '../../services/useFetch';
 
 enum KeyCodes {
   enter = 'Enter',
 }
 
-function HomeSearch(props: HomeSearchPropsType) {
+function HomeSearch() {
   const storageKey = 'redcliphaloe-react2023Q1-home-search';
-  const { searchRef, sendSearchValue } = props;
+  const focusElementRef = useRef() as MutableRefObject<HTMLInputElement>;
   const [searchValue, setSearchValue] = useState(localStorage.getItem(storageKey) || '');
   const storageValue = useRef(searchValue);
+  const [canFetch, setcanFetch] = useState(true);
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
   const handleKeyUp = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === KeyCodes.enter && searchValue) {
-      sendSearchValue(searchValue);
+      setcanFetch(true);
     }
   };
+  const { error, isPending, data } = useFetch(searchValue, canFetch);
 
   useEffect(() => {
     storageValue.current = searchValue;
+    setcanFetch(false);
   }, [searchValue]);
 
   useEffect(() => {
-    sendSearchValue(searchValue);
+    focusElementRef.current.focus();
     return () => {
       localStorage.setItem(storageKey, storageValue.current);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const clearBtnProps = {
     className: 'search__clear',
     onClick: () => {
       setSearchValue('');
-      searchRef.current.focus();
+      focusElementRef.current.focus();
     },
   };
   const submitBtnProps = {
     className: 'search__submit',
     onClick: () => {
-      sendSearchValue(searchValue);
-      searchRef.current.focus();
+      setcanFetch(true);
+      focusElementRef.current.focus();
     },
   };
 
   return (
-    <div className="search">
-      <input
-        className="search__text"
-        type="text"
-        placeholder="Введите наименование"
-        autoComplete="off"
-        value={searchValue}
-        onChange={handleChange}
-        onKeyUp={handleKeyUp}
-        ref={searchRef}
-      />
-      {searchValue && <HomeSearchButton {...clearBtnProps} />}
-      {searchValue && <HomeSearchButton {...submitBtnProps} />}
-    </div>
+    <>
+      <div className="search">
+        <input
+          className="search__text"
+          type="text"
+          placeholder="Введите наименование"
+          autoComplete="off"
+          value={searchValue}
+          onChange={handleChange}
+          onKeyUp={handleKeyUp}
+          ref={focusElementRef}
+        />
+        {searchValue && <HomeSearchButton {...clearBtnProps} />}
+        {searchValue && <HomeSearchButton {...submitBtnProps} />}
+      </div>
+      {isPending && <Loader />}
+      {!isPending && error && <div>{error}</div>}
+      {!isPending && !error && !!data?.photos?.photo.length && (
+        <div style={{ display: 'inline-block' }}></div>
+      )}
+      {!isPending && !error && !data?.photos?.photo.length && (
+        <div>No data found for this query</div>
+      )}
+    </>
   );
 }
 
