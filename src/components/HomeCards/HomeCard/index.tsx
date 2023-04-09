@@ -1,3 +1,4 @@
+import { HomeCardAltData } from '../../../specs/interfaces';
 import './style.css';
 
 interface HomeCardData {
@@ -11,19 +12,13 @@ interface HomeCardData {
   favorite: string;
 }
 
-function HomeCard(props: HomeCardData) {
-  const { name, count, year, shape, color, size, favorite } = props;
+function HomeCard(props: HomeCardAltData) {
+  const { id, server, secret, title } = props;
 
   return (
     <div className="home-card">
-      <h3 className="home-card__name">{name}</h3>
-      <div className="home-card__img"></div>
-      <p className="home-card__count">Количество: {count}</p>
-      <p className="home-card__year">Год выхода: {year}</p>
-      <p className="home-card__shape">Форма: {shape}</p>
-      <p className="home-card__color">Цвет: {color}</p>
-      <p className="home-card__size">Размер: {size}</p>
-      <p className="home-card__favorite">Популярный: {favorite}</p>
+      <h3 className="home-card__name">{title}</h3>
+      <img src={`https://live.staticflickr.com/${server}/${id}_${secret}.jpg`} alt="photo" />
     </div>
   );
 }

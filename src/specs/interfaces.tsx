@@ -16,6 +16,13 @@ export interface HomeCardData {
   user: { name: string };
 }
 
+export interface HomeCardAltData {
+  id: string;
+  server: string;
+  secret: string;
+  title: string;
+}
+
 export interface HomeFetchData {
   total: number;
   total_pages: number;
@@ -23,6 +30,6 @@ export interface HomeFetchData {
   errors: string[];
   message: string;
   photos: {
-    photo: { id: string; title: string }[];
+    photo: HomeCardAltData[];
   };
 }

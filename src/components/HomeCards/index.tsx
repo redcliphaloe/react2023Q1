@@ -1,23 +1,20 @@
 import './style.css';
 import HomeCard from './HomeCard';
-import homeCardsData from './homeCardsData';
+// import homeCardsData from './homeCardsData';
 import { useEffect } from 'react';
+import { HomeCardAltData } from '../../specs/interfaces';
 
 interface HomeCardsPropsType {
-  searchValue: string;
+  homeCardsData: HomeCardAltData[];
 }
 
 function HomeCards(props: HomeCardsPropsType) {
-  const { searchValue } = props;
-
-  useEffect(() => {
-    console.log('------- ', searchValue, ' ---------------');
-  }, [searchValue]);
+  const { homeCardsData } = props;
 
   return (
     <section className="home-cards">
       {homeCardsData.map((el) => (
-        <HomeCard {...el} key={el.num} />
+        <HomeCard {...el} key={el.id} />
       ))}
     </section>
   );

@@ -3,13 +3,19 @@ import './style.css';
 import HomeSearchButton from './HomeSearchButton';
 import Loader from '../Loader';
 import useFetch from '../../services/useFetch';
+import { HomeFetchData } from '../../specs/interfaces';
+
+interface HomeSearchPropsType {
+  sendSearchValue: (data: HomeFetchData | null) => void;
+}
 
 enum KeyCodes {
   enter = 'Enter',
 }
 
-function HomeSearch() {
+function HomeSearch(props: HomeSearchPropsType) {
   const storageKey = 'redcliphaloe-react2023Q1-home-search';
+  const { sendSearchValue } = props;
   const focusElementRef = useRef() as MutableRefObject<HTMLInputElement>;
   const [searchValue, setSearchValue] = useState(localStorage.getItem(storageKey) || '');
   const storageValue = useRef(searchValue);
@@ -25,8 +31,12 @@ function HomeSearch() {
   const { error, isPending, data } = useFetch(searchValue, canFetch);
 
   useEffect(() => {
-    storageValue.current = searchValue;
+    sendSearchValue(data);
     setcanFetch(false);
+  }, [data, sendSearchValue]);
+
+  useEffect(() => {
+    storageValue.current = searchValue;
   }, [searchValue]);
 
   useEffect(() => {
