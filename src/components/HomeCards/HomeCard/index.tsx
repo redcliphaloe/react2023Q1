@@ -1,22 +1,18 @@
+import { useState } from 'react';
 import { HomeCardAltData } from '../../../specs/interfaces';
 import './style.css';
-
-interface HomeCardData {
-  num: string;
-  name: string;
-  count: string;
-  year: string;
-  shape: string;
-  color: string;
-  size: string;
-  favorite: string;
-}
+import HomeCardDetail from '../HomeCardDetail';
 
 function HomeCard(props: HomeCardAltData) {
   const { id, server, secret, title } = props;
+  const [showDetail, setShowDetail] = useState(false);
+  const handleClick = () => {
+    setShowDetail(true);
+    document.body.style.overflowY = 'hidden';
+  };
 
   return (
-    <div className="home-card">
+    <div className="home-card" onClick={handleClick}>
       <h3 className="home-card__name">{title}</h3>
       <div
         className="home-card__img"
@@ -24,6 +20,16 @@ function HomeCard(props: HomeCardAltData) {
           backgroundImage: `url(https://live.staticflickr.com/${server}/${id}_${secret}.jpg)`,
         }}
       />
+      {showDetail && (
+        <HomeCardDetail
+          {...{
+            detailClick: () => {
+              document.body.style.overflowY = 'visible';
+              setShowDetail(false);
+            },
+          }}
+        />
+      )}
     </div>
   );
 }

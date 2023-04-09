@@ -1,7 +1,5 @@
 import './style.css';
 import HomeCard from './HomeCard';
-// import homeCardsData from './homeCardsData';
-import { useEffect } from 'react';
 import { HomeCardAltData } from '../../specs/interfaces';
 
 interface HomeCardsPropsType {
