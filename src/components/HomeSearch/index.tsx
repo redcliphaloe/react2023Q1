@@ -79,12 +79,10 @@ function HomeSearch(props: HomeSearchPropsType) {
       </div>
       {isPending && <Loader />}
       {!isPending && error && <div>{error}</div>}
-      {!isPending && !error && !!data?.photos?.photo.length && (
+      {!isPending && !error && !!data?.results.length && (
         <div style={{ display: 'inline-block' }}></div>
       )}
-      {!isPending && !error && !data?.photos?.photo.length && (
-        <div>No data found for this query</div>
-      )}
+      {!isPending && !error && !data?.results.length && <div>No data found for this query</div>}
     </>
   );
 }

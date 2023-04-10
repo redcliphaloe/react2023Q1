@@ -12,7 +12,7 @@ function useFetch(searchValue: string, canFetch: boolean) {
       setIsPending(true);
       setTimeout(() => {
         fetch(
-          `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=32ec121da5203a172f81bed155b47664&text=${searchValue}&format=json&nojsoncallback=1`
+          `https://api.unsplash.com/search/photos?query=${searchValue}&per_page=30&client_id=D7eXntUfsJytP5zP1_2ZA7MHqJ-43XOGbpeXVaCRVoU`
         )
           .then((res) => {
             return res.json();
@@ -20,7 +20,7 @@ function useFetch(searchValue: string, canFetch: boolean) {
           .then((data) => {
             setData(data);
             setIsPending(false);
-            setError(data.message);
+            setError(data.errors ? data.errors[0] : null);
           })
           .catch((err) => {
             setIsPending(false);

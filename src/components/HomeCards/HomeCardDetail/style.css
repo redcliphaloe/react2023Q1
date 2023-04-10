@@ -1,6 +1,6 @@
 .home-card-detail__wrapper {
   z-index: 2;
-  display: block;
+  display: flex;
   position: fixed;
   left: 0;
   top: 0;
@@ -12,10 +12,13 @@
 .home-card-detail__card {
   z-index: 3;
   display: block;
-  position: fixed;
-  left: calc(5%);
-  top: calc(5%);
-  width: 90%;
+  margin: auto auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  min-width: 50%;
   height: 90%;
   border: 5px solid #0075ff;
   border-radius: 9px;
@@ -42,4 +45,20 @@
 
 .home-card-detail__close-btn:hover {
   background-color: rgb(230, 230, 230);
+}
+
+.home-card-detail__img {
+  height: 80%;
+  width: 90%;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.home-card-detail__card h3,
+.home-card-detail__card p {
+  width: 85%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

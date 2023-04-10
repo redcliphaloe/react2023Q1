@@ -13,7 +13,7 @@ function Home() {
       <HomeSearch
         {...{ sendSearchValue: (data: HomeFetchData | null) => setHomeFetchData(data) }}
       />
-      {homeFetchData?.photos && <HomeCards {...{ homeCardsData: homeFetchData.photos.photo }} />}
+      {homeFetchData?.results && <HomeCards {...{ homeCardsData: homeFetchData.results }} />}
     </>
   );
 }

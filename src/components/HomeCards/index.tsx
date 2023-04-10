@@ -1,9 +1,9 @@
 import './style.css';
 import HomeCard from './HomeCard';
-import { HomeCardAltData } from '../../specs/interfaces';
+import { HomeCardData } from '../../specs/interfaces';
 
 interface HomeCardsPropsType {
-  homeCardsData: HomeCardAltData[];
+  homeCardsData: HomeCardData[];
 }
 
 function HomeCards(props: HomeCardsPropsType) {
