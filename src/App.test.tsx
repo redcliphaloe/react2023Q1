@@ -4,10 +4,7 @@ import App from './App';
 
 describe('App', () => {
   it('First page name is Home', () => {
-    // ARRANGE
     render(<App />);
-    // ACT
-    // EXPECT
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Home');
   });
 });
