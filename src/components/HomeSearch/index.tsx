@@ -19,20 +19,20 @@ function HomeSearch(props: HomeSearchPropsType) {
   const focusElementRef = useRef() as MutableRefObject<HTMLInputElement>;
   const [searchValue, setSearchValue] = useState(localStorage.getItem(storageKey) || '');
   const storageValue = useRef(searchValue);
-  const [canFetch, setcanFetch] = useState(true);
+  const [canFetch, setCanFetch] = useState(true);
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
   const handleKeyUp = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === KeyCodes.enter && searchValue) {
-      setcanFetch(true);
+      setCanFetch(true);
     }
   };
   const { error, isPending, data } = useFetch(searchValue, canFetch);
 
   useEffect(() => {
     sendSearchValue(data);
-    setcanFetch(false);
+    setCanFetch(false);
   }, [data, sendSearchValue]);
 
   useEffect(() => {
@@ -56,7 +56,7 @@ function HomeSearch(props: HomeSearchPropsType) {
   const submitBtnProps = {
     className: 'search__submit',
     onClick: () => {
-      setcanFetch(true);
+      setCanFetch(true);
       focusElementRef.current.focus();
     },
   };
