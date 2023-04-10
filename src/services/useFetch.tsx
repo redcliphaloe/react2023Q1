@@ -12,7 +12,9 @@ function useFetch(searchValue: string, canFetch: boolean) {
       setIsPending(true);
       setTimeout(() => {
         fetch(
-          `https://api.unsplash.com/search/photos?query=${searchValue}&per_page=30&client_id=D7eXntUfsJytP5zP1_2ZA7MHqJ-43XOGbpeXVaCRVoU`
+          `https://api.unsplash.com/search/photos?query=${
+            searchValue ? searchValue : 'random'
+          }&per_page=30&client_id=D7eXntUfsJytP5zP1_2ZA7MHqJ-43XOGbpeXVaCRVoU`
         )
           .then((res) => {
             return res.json();
