@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://redcliphaloe.github.io/react2023Q1/",
   "scripts": {
     "dev": "vite",
     "build": "npm run lint && tsc && vite build",
@@ -11,7 +12,7 @@
     "lint:fix": "eslint --fix --ext js,ts,tsx src",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "deploy": "Выполнять в консоли каждую команду по отдельности: npm run build && git add dist -f && git commit -m 'Adding dist' && git subtree push --prefix dist origin gh-pages"
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "dependencies": {
     "react": "^18.2.0",
