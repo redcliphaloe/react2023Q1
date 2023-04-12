@@ -1,21 +1,19 @@
-import { MutableRefObject, useEffect, useRef } from 'react';
 import PagesLinks from '../../components/PagesLinks';
 import HomeSearch from '../../components/HomeSearch';
 import HomeCards from '../../components/HomeCards';
+import { useState } from 'react';
+import { HomeFetchData } from '../../specs/interfaces';
 
 function Home() {
-  const focusedEl = useRef() as MutableRefObject<HTMLInputElement>;
-
-  useEffect(() => focusedEl.current.focus());
-
-  const homeSearchProps = { focusedEl: focusedEl };
-
+  const [homeFetchData, setHomeFetchData] = useState<HomeFetchData | null>(null);
   return (
     <>
       <PagesLinks />
       <h1>Home</h1>
-      <HomeSearch {...homeSearchProps} />
-      <HomeCards />
+      <HomeSearch
+        {...{ sendSearchValue: (data: HomeFetchData | null) => setHomeFetchData(data) }}
+      />
+      {homeFetchData?.results && <HomeCards {...{ homeCardsData: homeFetchData.results }} />}
     </>
   );
 }

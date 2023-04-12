@@ -7,7 +7,7 @@ import Forms from './pages/Forms';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/react2023Q1/">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/forms" element={<Forms />} />

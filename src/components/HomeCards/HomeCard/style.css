@@ -6,6 +6,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   gap: 5px;
   padding: 10px;
   cursor: pointer;
@@ -20,132 +21,19 @@
   display: none;
 }
 
+.home-card__name {
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .home-card__img {
-  width: 50px;
-  height: 50px;
+  width: 280px;
+  height: 280px;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
   background-position: center;
-}
-
-.home-card:nth-child(1) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/1.jpg");
-}
-
-.home-card:nth-child(2) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/2.jpg");
-}
-
-.home-card:nth-child(3) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/3.jpg");
-}
-
-.home-card:nth-child(4) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/4.jpg");
-}
-
-.home-card:nth-child(5) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/5.jpg");
-}
-
-.home-card:nth-child(6) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/6.jpg");
-}
-
-.home-card:nth-child(7) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/7.jpg");
-}
-
-.home-card:nth-child(8) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/8.jpg");
-}
-
-.home-card:nth-child(9) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/9.jpg");
-}
-
-.home-card:nth-child(10) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/10.jpg");
-}
-
-.home-card:nth-child(11) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/11.jpg");
-}
-
-.home-card:nth-child(12) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/12.jpg");
-}
-
-.home-card:nth-child(13) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/13.jpg");
-}
-
-.home-card:nth-child(14) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/14.jpg");
-}
-
-.home-card:nth-child(15) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/15.jpg");
-}
-
-.home-card:nth-child(16) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/16.jpg");
-}
-
-.home-card:nth-child(17) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/17.jpg");
-}
-
-.home-card:nth-child(18) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/18.jpg");
-}
-
-.home-card:nth-child(19) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/19.jpg");
-}
-
-.home-card:nth-child(20) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/20.jpg");
-}
-
-.home-card:nth-child(21) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/21.jpg");
-}
-
-.home-card:nth-child(22) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/22.jpg");
-}
-
-.home-card:nth-child(23) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/23.jpg");
-}
-
-.home-card:nth-child(24) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/24.jpg");
-}
-
-.home-card:nth-child(25) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/25.jpg");
-}
-
-.home-card:nth-child(26) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/26.jpg");
-}
-
-.home-card:nth-child(27) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/27.jpg");
-}
-
-.home-card:nth-child(28) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/28.jpg");
-}
-
-.home-card:nth-child(29) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/29.jpg");
-}
-
-.home-card:nth-child(30) .home-card__img {
-  background-image: url("../../../assets/img/homeCards/30.jpg");
 }
 
 .home-card h3,

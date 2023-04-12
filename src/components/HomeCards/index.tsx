@@ -1,12 +1,18 @@
 import './style.css';
 import HomeCard from './HomeCard';
-import homeCardsData from './homeCardsData';
+import { HomeCardData } from '../../specs/interfaces';
 
-function HomeCards() {
+interface HomeCardsPropsType {
+  homeCardsData: HomeCardData[];
+}
+
+function HomeCards(props: HomeCardsPropsType) {
+  const { homeCardsData } = props;
+
   return (
     <section className="home-cards">
       {homeCardsData.map((el) => (
-        <HomeCard {...el} key={el.num} />
+        <HomeCard {...el} key={el.id} />
       ))}
     </section>
   );
