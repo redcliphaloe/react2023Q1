@@ -2,19 +2,23 @@ import { createSlice } from '@reduxjs/toolkit';
 import { HomeFetchData } from '../../specs/interfaces';
 import { storageKey } from '../../specs/consts';
 
-interface State {
-  homeSearch: {
-    text: string;
-    results: HomeFetchData | null;
-  };
+interface HomeSearch {
+  text: string;
+  results: HomeFetchData | null;
 }
+
+interface State {
+  homeSearch: HomeSearch;
+}
+
+const initialState: HomeSearch = {
+  text: localStorage.getItem(storageKey) || '',
+  results: null,
+};
 
 export const homeSearchSlice = createSlice({
   name: 'homeSearch',
-  initialState: {
-    text: localStorage.getItem(storageKey) || '',
-    results: null,
-  },
+  initialState,
   reducers: {
     changeValue: (state, action) => {
       state.text = action.payload;
