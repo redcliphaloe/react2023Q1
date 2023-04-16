@@ -7,6 +7,7 @@ import ModalMessage from './ModalMessage';
 import './style.css';
 import { newCardId, submit } from './formsFormSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import defaultPhoto from '../../assets/img/no-image.png';
 
 interface OtherFormElements {
   agreement: boolean;
@@ -22,7 +23,6 @@ enum MandatoryType {
 }
 
 function FormsForm() {
-  const defaultPhoto = '/src/assets/img/no-image.png';
   const hasPhoto = useRef(false);
   const cardId = useSelector(newCardId);
   const dispatch = useDispatch();
