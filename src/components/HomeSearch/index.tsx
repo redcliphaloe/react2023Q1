@@ -3,56 +3,49 @@ import './style.css';
 import HomeSearchButton from './HomeSearchButton';
 import Loader from '../Loader';
 import useFetch from '../../services/useFetch';
-import { HomeFetchData } from '../../specs/interfaces';
-
-interface HomeSearchPropsType {
-  sendSearchValue: (data: HomeFetchData | null) => void;
-}
+import { storageKey } from '../../specs/consts';
+import { homeSearchValue, changeValue } from './homeSearchSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 enum KeyCodes {
   enter = 'Enter',
 }
 
-function HomeSearch(props: HomeSearchPropsType) {
-  const storageKey = 'redcliphaloe-react2023Q1-home-search';
-  const { sendSearchValue } = props;
+const HomeSearch = () => {
   const focusElementRef = useRef() as MutableRefObject<HTMLInputElement>;
-  const [searchValue, setSearchValue] = useState(localStorage.getItem(storageKey) || '');
-  const storageValue = useRef(searchValue);
+  const searchValue = useSelector(homeSearchValue);
+  const dispatch = useDispatch();
   const [canFetch, setCanFetch] = useState(true);
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value);
+    dispatch(changeValue(event.target.value));
   };
+
   const handleKeyUp = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === KeyCodes.enter && searchValue) {
+    if (event.key === KeyCodes.enter) {
       setCanFetch(true);
     }
   };
-  const { error, isPending, data } = useFetch(searchValue, canFetch);
-
-  useEffect(() => {
-    sendSearchValue(data);
-    setCanFetch(false);
-  }, [data, sendSearchValue]);
-
-  useEffect(() => {
-    storageValue.current = searchValue;
-  }, [searchValue]);
 
   useEffect(() => {
     focusElementRef.current.focus();
-    return () => {
-      localStorage.setItem(storageKey, storageValue.current);
-    };
   }, []);
+
+  const { error, isPending, data } = useFetch(searchValue, canFetch);
+
+  useEffect(() => {
+    setCanFetch(false);
+    localStorage.setItem(storageKey, searchValue);
+  }, [canFetch, searchValue]);
 
   const clearBtnProps = {
     className: 'search__clear',
     onClick: () => {
-      setSearchValue('');
+      dispatch(changeValue(''));
       focusElementRef.current.focus();
     },
   };
+
   const submitBtnProps = {
     className: 'search__submit',
     onClick: () => {
@@ -75,7 +68,7 @@ function HomeSearch(props: HomeSearchPropsType) {
           ref={focusElementRef}
         />
         {searchValue && <HomeSearchButton {...clearBtnProps} />}
-        {searchValue && <HomeSearchButton {...submitBtnProps} />}
+        <HomeSearchButton {...submitBtnProps} />
       </div>
       {isPending && <Loader />}
       {!isPending && error && <div>{error}</div>}
@@ -85,6 +78,6 @@ function HomeSearch(props: HomeSearchPropsType) {
       {!isPending && !error && !data?.results.length && <div>No data found for this query</div>}
     </>
   );
-}
+};
 
 export default HomeSearch;
