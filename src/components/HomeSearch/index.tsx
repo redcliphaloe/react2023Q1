@@ -4,7 +4,7 @@ import HomeSearchButton from './HomeSearchButton';
 import Loader from '../Loader';
 import useFetch from '../../services/useFetch';
 import { storageKey } from '../../specs/consts';
-import { homeSearchValue, changeValue } from './homeSearchSlice';
+import { text, changeValue, results, fetchData } from './homeSearchSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 enum KeyCodes {
@@ -13,7 +13,8 @@ enum KeyCodes {
 
 const HomeSearch = () => {
   const focusElementRef = useRef() as MutableRefObject<HTMLInputElement>;
-  const searchValue = useSelector(homeSearchValue);
+  const searchValue = useSelector(text);
+  const searchData = useSelector(results);
   const dispatch = useDispatch();
   const [canFetch, setCanFetch] = useState(true);
 
@@ -31,12 +32,16 @@ const HomeSearch = () => {
     focusElementRef.current.focus();
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem(storageKey, searchValue);
+  }, [searchValue]);
+
   const { error, isPending, data } = useFetch(searchValue, canFetch);
 
   useEffect(() => {
     setCanFetch(false);
-    localStorage.setItem(storageKey, searchValue);
-  }, [canFetch, searchValue]);
+    dispatch(fetchData(data));
+  }, [data, dispatch]);
 
   const clearBtnProps = {
     className: 'search__clear',
@@ -72,10 +77,12 @@ const HomeSearch = () => {
       </div>
       {isPending && <Loader />}
       {!isPending && error && <div>{error}</div>}
-      {!isPending && !error && !!data?.results.length && (
+      {!isPending && !error && !!searchData?.results.length && (
         <div style={{ display: 'inline-block' }}></div>
       )}
-      {!isPending && !error && !data?.results.length && <div>No data found for this query</div>}
+      {!isPending && !error && !searchData?.results.length && (
+        <div>No data found for this query</div>
+      )}
     </>
   );
 };

@@ -4,26 +4,32 @@ import { storageKey } from '../../specs/consts';
 
 interface State {
   homeSearch: {
-    value: string;
-    data: HomeFetchData | null;
+    text: string;
+    results: HomeFetchData | null;
   };
 }
 
 export const homeSearchSlice = createSlice({
   name: 'homeSearch',
   initialState: {
-    value: localStorage.getItem(storageKey) || '',
-    data: null,
+    text: localStorage.getItem(storageKey) || '',
+    results: null,
+    canFetch: true,
   },
   reducers: {
     changeValue: (state, action) => {
-      state.value = action.payload;
+      state.text = action.payload;
+    },
+    fetchData: (state, action) => {
+      state.results = action.payload;
     },
   },
 });
 
-export const { changeValue } = homeSearchSlice.actions;
+export const { changeValue, fetchData } = homeSearchSlice.actions;
 
-export const homeSearchValue = (state: State) => state.homeSearch.value;
+export const text = (state: State) => state.homeSearch.text;
+
+export const results = (state: State) => state.homeSearch.results;
 
 export default homeSearchSlice.reducer;
