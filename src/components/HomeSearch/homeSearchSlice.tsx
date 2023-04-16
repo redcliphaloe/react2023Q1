@@ -14,7 +14,6 @@ export const homeSearchSlice = createSlice({
   initialState: {
     text: localStorage.getItem(storageKey) || '',
     results: null,
-    canFetch: true,
   },
   reducers: {
     changeValue: (state, action) => {
