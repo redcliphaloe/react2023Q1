@@ -1,13 +1,10 @@
 import FormsCard from './FormsCard';
-import { FormsFormData } from '../../specs/interfaces';
 import './style.css';
+import { useSelector } from 'react-redux';
+import { cardsData } from '../FormsForm/formsFormSlice';
 
-interface FormsCardsPropsType {
-  formsFormData: FormsFormData[];
-}
-
-function FormsCards(props: FormsCardsPropsType) {
-  const { formsFormData } = props;
+function FormsCards() {
+  const formsFormData = useSelector(cardsData);
 
   return (
     <section className="forms-cards">

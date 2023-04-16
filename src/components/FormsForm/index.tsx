@@ -5,11 +5,8 @@ import { InvalidMessages } from '../../specs/enums';
 import InvalidMessage from './InvalidMessage';
 import ModalMessage from './ModalMessage';
 import './style.css';
-
-interface FormsFormPropsType {
-  sendData: (data: FormsFormData) => void;
-  prevId: number;
-}
+import { newCardId, submit } from './formsFormSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface OtherFormElements {
   agreement: boolean;
@@ -24,10 +21,11 @@ enum MandatoryType {
   agreement,
 }
 
-function FormsForm(props: FormsFormPropsType) {
+function FormsForm() {
   const defaultPhoto = '/src/assets/img/no-image.png';
   const hasPhoto = useRef(false);
-  const { sendData, prevId } = props;
+  const cardId = useSelector(newCardId);
+  const dispatch = useDispatch();
   const [photo, setPhoto] = useState(defaultPhoto);
   const [submitMessageVisible, setSubmitMessageVisible] = useState(false);
   const {
@@ -72,7 +70,7 @@ function FormsForm(props: FormsFormPropsType) {
 
   const onSubmit = (submitedData: FormsFormData) => {
     const data = {
-      id: prevId + 1,
+      id: cardId,
       photo: photo,
       name: submitedData.name,
       sex: submitedData.sex,
@@ -81,7 +79,7 @@ function FormsForm(props: FormsFormPropsType) {
     };
     setSubmitMessageVisible(true);
     setTimeout(() => {
-      sendData(data);
+      dispatch(submit(data));
       clearForm();
       setSubmitMessageVisible(false);
     }, 1000);
