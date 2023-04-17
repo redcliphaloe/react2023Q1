@@ -22,7 +22,7 @@ enum MandatoryType {
   agreement,
 }
 
-function FormsForm() {
+const FormsForm = () => {
   const hasPhoto = useRef(false);
   const cardId = useSelector(newCardId);
   const dispatch = useDispatch();
@@ -203,6 +203,6 @@ function FormsForm() {
       <ModalMessage {...{ visible: submitMessageVisible, message: 'The data has been saved' }} />
     </form>
   );
-}
+};
 
 export default FormsForm;

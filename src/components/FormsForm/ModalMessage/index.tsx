@@ -5,7 +5,7 @@ interface ModalMessagePropsType {
   message: string;
 }
 
-function ModalMessage(props: ModalMessagePropsType) {
+const ModalMessage = (props: ModalMessagePropsType) => {
   const { visible, message } = props;
 
   return visible ? (
@@ -15,6 +15,6 @@ function ModalMessage(props: ModalMessagePropsType) {
   ) : (
     <></>
   );
-}
+};
 
 export default ModalMessage;

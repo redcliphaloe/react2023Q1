@@ -3,7 +3,7 @@ import HomeCard from './HomeCard';
 import { useSelector } from 'react-redux';
 import { results } from '../HomeSearch/homeSearchSlice';
 
-function HomeCards() {
+const HomeCards = () => {
   const homeCardsData = useSelector(results);
 
   return (
@@ -12,6 +12,6 @@ function HomeCards() {
         homeCardsData.results.map((el) => <HomeCard {...el} key={el.id} />)}
     </section>
   );
-}
+};
 
 export default HomeCards;

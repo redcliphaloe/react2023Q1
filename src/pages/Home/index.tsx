@@ -2,7 +2,7 @@ import PagesLinks from '../../components/PagesLinks';
 import HomeSearch from '../../components/HomeSearch';
 import HomeCards from '../../components/HomeCards';
 
-function Home() {
+const Home = () => {
   return (
     <>
       <PagesLinks />
@@ -11,6 +11,6 @@ function Home() {
       <HomeCards />
     </>
   );
-}
+};
 
 export default Home;

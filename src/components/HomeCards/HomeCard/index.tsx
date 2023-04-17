@@ -3,7 +3,7 @@ import { HomeCardData } from '../../../specs/interfaces';
 import './style.css';
 import HomeCardDetail from '../HomeCardDetail';
 
-function HomeCard(props: HomeCardData) {
+const HomeCard = (props: HomeCardData) => {
   const { urls } = props;
   const { regular } = urls;
   const [showDetail, setShowDetail] = useState(false);
@@ -30,6 +30,6 @@ function HomeCard(props: HomeCardData) {
       {showDetail && <HomeCardDetail {...homeCardDetail} />}
     </div>
   );
-}
+};
 
 export default HomeCard;

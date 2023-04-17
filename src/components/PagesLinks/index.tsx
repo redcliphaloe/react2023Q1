@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import './style.css';
 
-function PagesLinks() {
+const PagesLinks = () => {
   return (
     <nav className="pages-links">
       <Link to="/">Home</Link>
@@ -9,6 +9,6 @@ function PagesLinks() {
       <Link to="/about-us">About us</Link>
     </nav>
   );
-}
+};
 
 export default PagesLinks;

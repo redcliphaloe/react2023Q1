@@ -3,7 +3,7 @@ import './style.css';
 import { useSelector } from 'react-redux';
 import { cardsData } from '../FormsForm/formsFormSlice';
 
-function FormsCards() {
+const FormsCards = () => {
   const formsFormData = useSelector(cardsData);
 
   return (
@@ -13,6 +13,6 @@ function FormsCards() {
       ))}
     </section>
   );
-}
+};
 
 export default FormsCards;

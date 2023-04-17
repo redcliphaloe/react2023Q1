@@ -2,7 +2,7 @@ import PagesLinks from '../../components/PagesLinks';
 import FormsForm from '../../components/FormsForm';
 import FormsCards from '../../components/FormsCards';
 
-function Forms() {
+const Forms = () => {
   return (
     <>
       <PagesLinks />
@@ -11,6 +11,6 @@ function Forms() {
       <FormsCards />
     </>
   );
-}
+};
 
 export default Forms;

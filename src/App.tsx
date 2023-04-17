@@ -5,7 +5,7 @@ import AboutUs from './pages/AboutUs';
 import NotFound from './pages/NotFound';
 import Forms from './pages/Forms';
 
-function App() {
+const App = () => {
   return (
     <BrowserRouter basename="/react2023Q1/">
       <Routes>
@@ -16,6 +16,6 @@ function App() {
       </Routes>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

@@ -1,7 +1,7 @@
 import { FormsFormData } from '../../../specs/interfaces';
 import './style.css';
 
-function FormsCard(props: FormsFormData) {
+const FormsCard = (props: FormsFormData) => {
   const { photo, name, sex, birthDate, continent } = props;
 
   return (
@@ -13,6 +13,6 @@ function FormsCard(props: FormsFormData) {
       <p className="forms-card__continent">Continent: {continent}</p>
     </div>
   );
-}
+};
 
 export default FormsCard;

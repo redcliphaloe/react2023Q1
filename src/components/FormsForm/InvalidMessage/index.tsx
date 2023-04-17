@@ -6,10 +6,10 @@ interface InvalidMessagePropsType {
   message: InvalidMessages;
 }
 
-function InvalidMessage(props: InvalidMessagePropsType) {
+const InvalidMessage = (props: InvalidMessagePropsType) => {
   const { visible, message } = props;
 
   return <p className="invalid-message">{visible ? message : ''}</p>;
-}
+};
 
 export default InvalidMessage;
