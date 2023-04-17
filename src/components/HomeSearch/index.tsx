@@ -1,11 +1,19 @@
-import { ChangeEvent, KeyboardEvent, MutableRefObject, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, MutableRefObject, useEffect, useRef } from 'react';
 import './style.css';
 import HomeSearchButton from './HomeSearchButton';
 import Loader from '../Loader';
-import useFetch from '../../services/useFetch';
 import { storageKey } from '../../specs/consts';
-import { text, changeValue, results, fetchData } from './homeSearchSlice';
+import {
+  text,
+  changeValue,
+  results,
+  skipApi,
+  submitValue,
+  isLoadingApi,
+  errorTextApi,
+} from './homeSearchSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { useGetUnsplashDataByQueryQuery } from '../../services/unsplash';
 
 enum KeyCodes {
   enter = 'Enter',
@@ -15,8 +23,10 @@ const HomeSearch = () => {
   const focusElementRef = useRef() as MutableRefObject<HTMLInputElement>;
   const searchValue = useSelector(text);
   const searchData = useSelector(results);
+  const skip = useSelector(skipApi);
+  const isLoading = useSelector(isLoadingApi);
+  const errorText = useSelector(errorTextApi);
   const dispatch = useDispatch();
-  const [canFetch, setCanFetch] = useState(true);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     dispatch(changeValue(event.target.value));
@@ -24,7 +34,7 @@ const HomeSearch = () => {
 
   const handleKeyUp = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === KeyCodes.enter) {
-      setCanFetch(true);
+      dispatch(submitValue());
     }
   };
 
@@ -36,12 +46,7 @@ const HomeSearch = () => {
     localStorage.setItem(storageKey, searchValue);
   }, [searchValue]);
 
-  const { error, isPending, data } = useFetch(searchValue, canFetch);
-
-  useEffect(() => {
-    setCanFetch(false);
-    dispatch(fetchData(data));
-  }, [data, dispatch]);
+  useGetUnsplashDataByQueryQuery(searchValue, { skip });
 
   const clearBtnProps = {
     className: 'search__clear',
@@ -54,7 +59,7 @@ const HomeSearch = () => {
   const submitBtnProps = {
     className: 'search__submit',
     onClick: () => {
-      setCanFetch(true);
+      dispatch(submitValue());
       focusElementRef.current.focus();
     },
   };
@@ -75,12 +80,12 @@ const HomeSearch = () => {
         {searchValue && <HomeSearchButton {...clearBtnProps} />}
         <HomeSearchButton {...submitBtnProps} />
       </div>
-      {isPending && <Loader />}
-      {!isPending && error && <div>{error}</div>}
-      {!isPending && !error && !!searchData?.results.length && (
+      {isLoading && <Loader />}
+      {!isLoading && errorText && <div>{errorText}</div>}
+      {!isLoading && !errorText && !!searchData?.results.length && (
         <div style={{ display: 'inline-block' }}></div>
       )}
-      {!isPending && !error && !searchData?.results.length && (
+      {!isLoading && !errorText && !searchData?.results.length && (
         <div>No data found for this query</div>
       )}
     </>
