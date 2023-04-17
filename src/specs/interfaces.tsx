@@ -16,20 +16,9 @@ export interface HomeCardData {
   user: { name: string };
 }
 
-export interface HomeCardAltData {
-  id: string;
-  server: string;
-  secret: string;
-  title: string;
-}
-
 export interface HomeFetchData {
   total: number;
   total_pages: number;
   results: HomeCardData[];
   errors: string[];
-  message: string;
-  photos: {
-    photo: HomeCardAltData[];
-  };
 }
