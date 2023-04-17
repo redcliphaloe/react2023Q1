@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { HomeFetchData } from '../../specs/interfaces';
-import { storageKey } from '../../specs/consts';
 import { unsplashApi } from '../../services/unsplash';
 
 interface HomeSearch {
@@ -16,7 +15,7 @@ interface State {
 }
 
 const initialState: HomeSearch = {
-  text: localStorage.getItem(storageKey) || '',
+  text: '',
   results: null,
   skipApi: false,
   isLoadingApi: false,

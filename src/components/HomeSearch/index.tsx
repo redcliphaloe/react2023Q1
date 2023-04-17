@@ -2,7 +2,6 @@ import { ChangeEvent, KeyboardEvent, MutableRefObject, useEffect, useRef } from 
 import './style.css';
 import HomeSearchButton from './HomeSearchButton';
 import Loader from '../Loader';
-import { storageKey } from '../../specs/consts';
 import {
   text,
   changeValue,
@@ -41,10 +40,6 @@ const HomeSearch = () => {
   useEffect(() => {
     focusElementRef.current.focus();
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem(storageKey, searchValue);
-  }, [searchValue]);
 
   useGetUnsplashDataByQueryQuery(searchValue, { skip });
 
