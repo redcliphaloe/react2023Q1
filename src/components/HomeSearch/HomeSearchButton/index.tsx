@@ -5,10 +5,10 @@ interface HomeSearchButtonPropsType {
   onClick: () => void;
 }
 
-function HomeSearchButton(props: HomeSearchButtonPropsType) {
+const HomeSearchButton = (props: HomeSearchButtonPropsType) => {
   const { className, onClick } = props;
 
   return <button className={className} onClick={onClick}></button>;
-}
+};
 
 export default HomeSearchButton;

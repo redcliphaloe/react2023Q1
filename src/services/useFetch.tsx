@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { HomeFetchData } from '../specs/interfaces';
 
-function useFetch(searchValue: string, canFetch: boolean) {
+const useFetch = (searchValue: string, canFetch: boolean) => {
   const [data, setData] = useState<HomeFetchData | null>(null);
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState('');
@@ -33,6 +33,6 @@ function useFetch(searchValue: string, canFetch: boolean) {
   }, [canFetch, searchValue]);
 
   return { data, isPending, error };
-}
+};
 
 export default useFetch;

@@ -1,6 +1,6 @@
 import './style.css';
 
-function Loader() {
+const Loader = () => {
   return (
     <div className="sk-circle">
       <div className="sk-circle1 sk-child"></div>
@@ -17,6 +17,6 @@ function Loader() {
       <div className="sk-circle12 sk-child"></div>
     </div>
   );
-}
+};
 
 export default Loader;

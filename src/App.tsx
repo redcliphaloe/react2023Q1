@@ -5,17 +5,17 @@ import AboutUs from './pages/AboutUs';
 import NotFound from './pages/NotFound';
 import Forms from './pages/Forms';
 
-function App() {
+const App = () => {
   return (
     <BrowserRouter basename="/react2023Q1/">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/forms" element={<Forms />} />
         <Route path="/about-us" element={<AboutUs />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

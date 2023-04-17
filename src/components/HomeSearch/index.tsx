@@ -1,62 +1,60 @@
-import { ChangeEvent, KeyboardEvent, MutableRefObject, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, MutableRefObject, useEffect, useRef } from 'react';
 import './style.css';
 import HomeSearchButton from './HomeSearchButton';
 import Loader from '../Loader';
-import useFetch from '../../services/useFetch';
-import { HomeFetchData } from '../../specs/interfaces';
-
-interface HomeSearchPropsType {
-  sendSearchValue: (data: HomeFetchData | null) => void;
-}
+import {
+  text,
+  changeValue,
+  results,
+  skipApi,
+  submitValue,
+  isLoadingApi,
+  errorTextApi,
+} from './homeSearchSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useGetUnsplashDataByQueryQuery } from '../../services/unsplash';
 
 enum KeyCodes {
   enter = 'Enter',
 }
 
-function HomeSearch(props: HomeSearchPropsType) {
-  const storageKey = 'redcliphaloe-react2023Q1-home-search';
-  const { sendSearchValue } = props;
+const HomeSearch = () => {
   const focusElementRef = useRef() as MutableRefObject<HTMLInputElement>;
-  const [searchValue, setSearchValue] = useState(localStorage.getItem(storageKey) || '');
-  const storageValue = useRef(searchValue);
-  const [canFetch, setCanFetch] = useState(true);
+  const searchValue = useSelector(text);
+  const searchData = useSelector(results);
+  const skip = useSelector(skipApi);
+  const isLoading = useSelector(isLoadingApi);
+  const errorText = useSelector(errorTextApi);
+  const dispatch = useDispatch();
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value);
+    dispatch(changeValue(event.target.value));
   };
+
   const handleKeyUp = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === KeyCodes.enter && searchValue) {
-      setCanFetch(true);
+    if (event.key === KeyCodes.enter) {
+      dispatch(submitValue());
     }
   };
-  const { error, isPending, data } = useFetch(searchValue, canFetch);
-
-  useEffect(() => {
-    sendSearchValue(data);
-    setCanFetch(false);
-  }, [data, sendSearchValue]);
-
-  useEffect(() => {
-    storageValue.current = searchValue;
-  }, [searchValue]);
 
   useEffect(() => {
     focusElementRef.current.focus();
-    return () => {
-      localStorage.setItem(storageKey, storageValue.current);
-    };
   }, []);
+
+  useGetUnsplashDataByQueryQuery(searchValue, { skip });
 
   const clearBtnProps = {
     className: 'search__clear',
     onClick: () => {
-      setSearchValue('');
+      dispatch(changeValue(''));
       focusElementRef.current.focus();
     },
   };
+
   const submitBtnProps = {
     className: 'search__submit',
     onClick: () => {
-      setCanFetch(true);
+      dispatch(submitValue());
       focusElementRef.current.focus();
     },
   };
@@ -75,16 +73,18 @@ function HomeSearch(props: HomeSearchPropsType) {
           ref={focusElementRef}
         />
         {searchValue && <HomeSearchButton {...clearBtnProps} />}
-        {searchValue && <HomeSearchButton {...submitBtnProps} />}
+        <HomeSearchButton {...submitBtnProps} />
       </div>
-      {isPending && <Loader />}
-      {!isPending && error && <div>{error}</div>}
-      {!isPending && !error && !!data?.results.length && (
+      {isLoading && <Loader />}
+      {!isLoading && errorText && <div>{errorText}</div>}
+      {!isLoading && !errorText && !!searchData?.results.length && (
         <div style={{ display: 'inline-block' }}></div>
       )}
-      {!isPending && !error && !data?.results.length && <div>No data found for this query</div>}
+      {!isLoading && !errorText && !searchData?.results.length && (
+        <div>No data found for this query</div>
+      )}
     </>
   );
-}
+};
 
 export default HomeSearch;

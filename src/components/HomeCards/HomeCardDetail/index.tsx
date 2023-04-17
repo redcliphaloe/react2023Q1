@@ -7,7 +7,7 @@ interface HomeCardDetailPropsType {
   detailClick: () => void;
 }
 
-function HomeCardDetail(props: HomeCardDetailPropsType) {
+const HomeCardDetail = (props: HomeCardDetailPropsType) => {
   const { data, detailClick } = props;
   const { description, alt_description, urls, likes, user } = data;
   const { regular } = urls;
@@ -42,6 +42,6 @@ function HomeCardDetail(props: HomeCardDetailPropsType) {
       </div>
     </div>
   );
-}
+};
 
 export default HomeCardDetail;
